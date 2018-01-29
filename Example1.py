@@ -40,3 +40,5 @@ a_location = LocationGlobalRelative(-35.362144, 149.164409, 20)
 drone.simple_goto(a_location)
 
 time.sleep(50)
+ 
+ 
