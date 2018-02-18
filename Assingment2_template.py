@@ -1,7 +1,6 @@
 #dronekit-sitl copter --home=20.737213,-103.456819,01633,180
 
 
-
 import time
 from dronekit import connect, VehicleMode, LocationGlobalRelative, Command, LocationGlobal
 from pymavlink import mavutil
@@ -32,7 +31,7 @@ import Tkinter as tk
 #   Author           : tiziano fiorenzani
 #
 #****************************************************************************
-
+#se define el movimiento del dron con velocidades en x,y y z. Despues se envia al simulador mediante mavlink
 def set_velocity_body(vehicle, vx, vy, vz):
     msg = vehicle.message_factory.set_position_target_local_ned_encode(
             0,
@@ -105,23 +104,18 @@ def arm_and_takeoff(TargetAltitude):
 #
 #****************************************************************************
 def key(event):
-    if event.char == event.keysym: #-- standard keys
+    if event.char == event.keysym: #si se presiona r, el dron regresara al punto de lanzamiento 
         if event.keysym == 'r':
-            drone.mode = VehicleMode("RTL")
-            ### Add your code for what you want to happen when you press r #####      
-    else: #-- non standard keys
+            drone.mode = VehicleMode("RTL")            
+    else: #cada una de las siguientes opcines mueve al dron mediante x y y
         if event.keysym == 'Up':
             set_velocity_body(drone,5,0,0)
-            ### add your code for what should happen when pressing the up arrow ###
         elif event.keysym == 'Down':
             set_velocity_body(drone,5,0,0)
-            ### add your code for what should happen when pressing the down arrow ###
         elif event.keysym == 'Left':
             set_velocity_body(drone,0,5,0)
-            ### add your code for what should happen when pressing the Left arrow ###
         elif event.keysym == 'Right':
             set_velocity_body(drone,0,5,0)
-            ### add your code for what should happen when pressing the Right arrow ###
 
 #****************************************************************************
 #   MAIN CODE
@@ -134,7 +128,8 @@ drone = connect('127.0.0.1:14551', wait_ready=True)
 arm_and_takeoff(10)
  
 # Read the keyboard with tkinter
-root = tk.Tk()
+#aqui se activa la funcion key, con la cual se puede asignar el movimiento al dron mediante un if
+root = tk.Tk() 
 print(">> Control the drone with the arrow keys. Press r for RTL mode")
-root.bind_all('<Key>', key)
-root.mainloop()
+root.bind_all('<Key>', key) 
+root.mainloop() #repite 
